@@ -1,13 +1,11 @@
 ---
-title: "My title"
-subtitle: "My subtitle if needed"
-author: 
-  - First author
-  - Another author
+title: "Week 3 Reflection"
+subtitle: "Marriage Data Cleaning"
+author: "Cher Ning-Li"
 thanks: "Code and data are available at: LINK."
 date: today
 date-format: long
-abstract: "First sentence. Second sentence. Third sentence. Fourth sentence."
+abstract: "In this paper I analyze the number of marriages across the years, from 2018-2023."
 format: pdf
 number-sections: true
 bibliography: references.bib
@@ -19,7 +17,8 @@ bibliography: references.bib
 #| message: false
 
 library(tidyverse)
-library(palmerpenguins)
+
+data <- read_csv(here::here("data/analysis_data/analysis_data.csv"))
 ```
 
 
@@ -33,44 +32,20 @@ The remainder of this paper is structured as follows. @sec-data....
 
 # Data {#sec-data}
 
-Some of our data is of penguins (@fig-bills), from @palmerpenguins.
+Some of our data is of penguins (@fig-marriages), from @OpenDataToronto.
 
 ```{r}
-#| label: fig-bills
-#| fig-cap: Bills of penguins
+#| label: fig-marriages
+#| fig-cap: Number of Marriages From 2018-2023
 #| echo: false
 
-ggplot(penguins, aes(x = island, fill = species)) +
-  geom_bar(alpha = 0.8) +
-  scale_fill_manual(values = c("darkorange","purple","cyan4"),
-                    guide = "none") +
-  theme_minimal() +
-  facet_wrap(~species, ncol = 1) +
-  coord_flip()
+data |> 
+  ggplot(aes(x = date, y = marriage_licenses)) + 
+  geom_point()
 ```
 
-Talk more about it.
+We can see that the number of marriages fluctuates across the years.
 
-And also planes (@fig-planes). (You can change the height and width, but don't worry about doing that until you have finished every other aspect of the paper - Quarto will try to make it look nice and the defaults usually work well once you have enough text.)
-
-```{r}
-#| label: fig-planes
-#| fig-cap: Relationship between wing length and width
-#| echo: false
-#| warning: false
-#| message: false
-
-analysis_data <- read_csv(here::here("data/analysis_data/analysis_data.csv"))
-
-analysis_data |> 
-  ggplot(aes(x = width, y = length)) +
-  geom_point(alpha = 0.8) +
-  theme_minimal() +
-  labs(x = "Wing width (mm)",
-       y = "Wing length (mm)")
-```
-
-Talk way more about it. 
 
 
 

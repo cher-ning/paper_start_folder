@@ -1,5 +1,5 @@
 #### Preamble ####
-# Purpose: Cleans the raw plane data recorded by two observers..... [...UPDATE THIS...]
+# Purpose: Cleans the raw shelter data for only relevant variables
 # Author: Cher Ning-Li
 # Date: 19 September 2024
 # Contact: cher.ning@mail.utoronto.ca
@@ -13,15 +13,19 @@ library(tidyverse)
 #### Clean data ####
 raw_data <- read_csv("data/raw_data/raw_data.csv")
 
-cleaned_data <-
-  raw_data |>
-  janitor::clean_names() |>
-  
-  separate(col = time_period, 
-            into = c("year", "month"),
-            sep = "-") |>
-  mutate(date = lubridate::ymd(paste(year, month, "01", sep = "-")))
+# filters for only Bed Based and Emergency type shelters located in Toronto
+filtered <- subset(data, CAPACITY_TYPE == 'Bed Based Capacity' &
+                     PROGRAM_MODEL == 'Emergency' & LOCATION_CITY == 'Toronto')
 
+# removes unnecessarily variables
+filtered <- filtered %>% select(OCCUPANCY_DATE, SHELTER_ID, 
+                                LOCATION_POSTAL_CODE, CAPACITY_ACTUAL_BED,
+                                CAPACITY_FUNDING_BED, OCCUPIED_BEDS,
+                                UNOCCUPIED_BEDS, UNAVAILABLE_BEDS, 
+                                OCCUPANCY_RATE_BEDS)
+
+# removes rows with NA data
+cleaned_data <- filtered %>% drop_na()
 
 #### Save data ####
 write_csv(cleaned_data, "data/analysis_data/analysis_data.csv")

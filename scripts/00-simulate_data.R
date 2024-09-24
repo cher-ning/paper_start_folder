@@ -31,7 +31,8 @@ data <-
       ),
       origin = "1970-01-01"
     ),
-    number_of_vacancies = rpois(n = number_of_dates, lambda = 10)
+    capacity = rpois(n = number_of_dates, lambda = 100),
+    vacancies = rpois(n = number_of_dates, lambda = 10)
   )
 
 # Write csv

@@ -1,7 +1,7 @@
 #### Preamble ####
 # Purpose: Simulates data
 # Author: Cher Ning-Li
-# Date: 19 September 2024
+# Date: 24 September 2024
 # Contact: cher.ning@mail.utoronto.ca
 # License: MIT
 # Pre-requisites: None
@@ -10,8 +10,6 @@
 
 #### Workspace setup ####
 library(tidyverse)
-
-# [...UPDATE THIS...]
 
 #### Simulate data ####
 set.seed(304)
@@ -33,7 +31,7 @@ data <-
       ),
       origin = "1970-01-01"
     ),
-    number_of_marriage = rpois(n = number_of_dates, lambda = 10)
+    number_of_vacancies = rpois(n = number_of_dates, lambda = 10)
   )
 
 # Write csv

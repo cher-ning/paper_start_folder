@@ -1,11 +1,12 @@
 ---
-title: "Week 3 Reflection"
-subtitle: "Marriage Data Cleaning"
+title: "Daily Shelter and Overnight Services Availabilities"
+#subtitle: "Marriage Data Cleaning"
 author: "Cher Ning-Li"
-thanks: "Code and data are available at: LINK."
+thanks: "Code and data are available at: https://github.com/cher-ning/shelter_occupancies"
 date: today
 date-format: long
-abstract: "In this paper I analyze the number of marriages across the years, from 2018-2023."
+abstract: "In this paper I analyze the capacity vs real occupancy of shelters across Canada."
+#TODO Complete abstract after paper.
 format: pdf
 number-sections: true
 bibliography: references.bib
@@ -24,7 +25,7 @@ data <- read_csv(here::here("data/analysis_data/analysis_data.csv"))
 
 # Introduction
 
-You can and should cross-reference sections and sub-sections. We use @citeR and @rohan.
+You can and should cross-reference sections and sub-sections. We use @citeR and @citeTidyverse
 
 The remainder of this paper is structured as follows. @sec-data....
 
@@ -32,7 +33,7 @@ The remainder of this paper is structured as follows. @sec-data....
 
 # Data {#sec-data}
 
-Some of our data is of marriages (@fig-marriages), from @OpenDataToronto.
+Some of our data is of marriages (@fig-marriages), from @opendatatoronto.
 
 ```{r}
 #| label: fig-marriages

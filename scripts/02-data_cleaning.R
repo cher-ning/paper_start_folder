@@ -14,7 +14,7 @@ library(tidyverse)
 raw_data <- read_csv("data/raw_data/raw_data.csv")
 
 # filters for only Bed Based and Emergency type shelters located in Toronto
-filtered <- subset(data, CAPACITY_TYPE == 'Bed Based Capacity' &
+filtered <- subset(raw_data, CAPACITY_TYPE == 'Bed Based Capacity' &
                      PROGRAM_MODEL == 'Emergency' & LOCATION_CITY == 'Toronto')
 
 # removes unnecessarily variables
@@ -24,8 +24,12 @@ filtered <- filtered %>% select(OCCUPANCY_DATE, SHELTER_ID,
                                 UNOCCUPIED_BEDS, UNAVAILABLE_BEDS, 
                                 OCCUPANCY_RATE_BEDS)
 
-# removes rows with NA data
-cleaned_data <- filtered %>% drop_na()
+# adds column for month
+# filtered$month <- format(as.Date(filtered$OCCUPANCY_DATE), "%m")
+
+# removes rows with NA data, cleans variables names
+cleaned_data <- filtered %>% drop_na() |> janitor::clean_names() 
+
 
 #### Save data ####
 write_csv(cleaned_data, "data/analysis_data/analysis_data.csv")

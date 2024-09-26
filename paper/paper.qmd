@@ -34,12 +34,11 @@ The remainder of this paper is structured as follows. @sec-data....
 
 Some of our data is of occupancy rate of shelters across the months (@fig-occupancyrate-vs-month), from @opendatatoronto.
 
-#switch to table here
+# check if occupancy rate varies over months
 ```{r}
 #| label: fig-occupancyrate-vs-month
 #| fig-cap: Shelter Occupancy Rate in 2024 Over the Months
 #| echo: false
-
 
 rate_means <- data %>% select(month, occupancy_rate) %>% group_by(month) %>% 
   summarise(mean_occupancy_rate = mean(occupancy_rate))
@@ -47,24 +46,79 @@ rate_means <- data %>% select(month, occupancy_rate) %>% group_by(month) %>%
 knitr::kable(rate_means, align ="c", col.names= c("Month", "Mean Occupancy Rate"))
 
 ```
-# add summary table of funding capacity here
+
+
+
+# first find num shelters per fsa
 ```{r}
-#| label: fig-fundingcapacity-summary
-#| fig-cap: Funding Capacities of Toronto Emergency Shelters
+#| label: fig-fsa-numshelters
+#| eval: true
+#| tbl-cap: "Number of Unique Shelters vs FSA"
 #| echo: false
 
-summary(data$funding_capacity)
+fsa_shelters <- data %>% select(fsa, location_id) %>% group_by(fsa) %>% 
+  summarise(numshelters = n_distinct(location_id))
+
+fsa_shelters <- fsa_shelters[order(fsa_shelters$numshelters, decreasing = TRUE), ]
+knitr::kable(top_n(fsa_shelters,5,numshelters), align ="c", col.names= c("FSA", "Number of Shelter Locations"))
+
+```
+```{r}
+hist(fsa_shelters$numshelters)
 ```
 
 ```{r}
+#| label: fig-regionoccupancy
+#| fig-cap: Average Bed Occupancy of Shelters Across Different FSA Regions
+#| echo: false
+
+region_occupancy <- data %>% select(fsa, occupied_beds) %>% group_by(fsa) %>%
+  summarise(mean_occupied = mean(occupied_beds))
+
+hist(region_occupancy$mean_occupied)
+
+```
+```{r}
 #| label: fig-fundingcapacity-histogram
-#| fig-cap: Funding Capacities of Toronto Emergency Shelters
+#| fig-cap: "Funding Capacities of Toronto Emergency Shelters"
 #| echo: false
 
 hist(data$funding_capacity)
 ```
 
-We can see that the number of marriages fluctuates across the years.
+# discuss summary stats of funding capacity in text, can consider to only include top few rows of this table
+```{r}
+#| label: fig-fsa-fundingcapacity
+#| eval: true
+#| tbl-cap: "Funding Capacities of Toronto Emergency Shelters"
+#| echo: false
+
+funding_means <- data %>% select(fsa, funding_capacity) %>% group_by(fsa) %>% 
+  summarise(mean_fundingcap = mean(funding_capacity))
+
+funding_means <- funding_means[order(funding_means$mean_fundingcap, decreasing = TRUE), ]
+
+#knitr::kable(top_n(funding_means,5,mean_fundingcap), align ="c", col.names= c("FSA", "Mean Funding Capacity"))
+hist(funding_means$mean_fundingcap)
+```
+
+```{r}
+#| label: fig-unavailabilities-by-fsa
+#| eval: true
+#| tbl-cap: "Number of Unavailable Beds/Night At Different FSAs"
+#| echo: false
+
+unavailable_beds <- data %>% select(fsa, unavailable_beds) %>% group_by(fsa) %>% 
+  summarise(mean_unavailable = mean(unavailable_beds))
+
+unavailable_beds <- unavailable_beds[order(unavailable_beds$mean_unavailable, decreasing = TRUE), ]
+
+knitr::kable(top_n(unavailable_beds,5,unavailable_beds$mean_unavailable), 
+             align ="c", col.names= c("FSA", "Average Number of Unavailable Beds"))
+#hist(unavailable_beds$mean_unavailable)
+```
+
+
 
 
 # Results

@@ -15,6 +15,8 @@ library(tidyverse)
 # package to use write_csv
 library(readr)
 
+# package <- show_package("21c83b32-d5a8-4106-a54f-010dbe49f6f2")
+
 # accesses link directly to download full data file
 all_data <- read_csv("https://ckan0.cf.opendata.inter.prod-toronto.ca/dataset/21c83b32-d5a8-4106-a54f-010dbe49f6f2/resource/ffd20867-6e3c-4074-8427-d63810edf231/download/Daily%20shelter%20overnight%20occupancy.csv")
 

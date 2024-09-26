@@ -16,6 +16,8 @@ library(rstanarm)
 analysis_data <- read_csv("data/analysis_data/analysis_data.csv")
 
 ### Model data ####
+
+# start with basic histogram 
 first_model <-
   stan_glm(
     formula = flying_time ~ length + width,

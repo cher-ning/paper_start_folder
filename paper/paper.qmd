@@ -36,13 +36,16 @@ The remainder of this paper is structured as follows. @sec-data....
 Some of our data is of marriages (@fig-marriages), from @opendatatoronto.
 
 ```{r}
-#| label: fig-marriages
-#| fig-cap: Number of Marriages From 2018-2023
+#| label: fig-occupancyrate-vs-month
+#| fig-cap: Shelter Occupancy Rate in 2024 Over the Months
 #| echo: false
 
-data |> 
-  ggplot(aes(x = date, y = marriage_licenses)) + 
-  geom_point()
+#data |> 
+#  ggplot(aes(x = date, y = occupancy_rate)) + 
+#  geom_point()
+
+
+hist(data$occupied_beds)
 ```
 
 We can see that the number of marriages fluctuates across the years.
@@ -81,13 +84,7 @@ library(rstanarm)
 #| tbl-cap: "Explanatory models of flight time based on wing width and wing length"
 #| warning: false
 
-modelsummary::modelsummary(
-  list(
-    "First model" = first_model
-  ),
-  statistic = "mad",
-  fmt = 2
-)
+
 ```
 
 

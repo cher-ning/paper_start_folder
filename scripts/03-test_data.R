@@ -15,7 +15,8 @@ library(tidyverse)
 data <- read_csv("data/analysis_data/analysis_data.csv")
 
 # Tests class of columns are what we expect
-data$date |> class() <= "Date"
+expect_equal(class(data$date), "Date") 
+#data$date |> class() <= "Date"
 data$month |> class() <= "numeric"
 data$actual_capacity |> class() <= "numeric"
 data$funding_capacity |> class() <= "numeric"

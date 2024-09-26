@@ -1,10 +1,10 @@
 ---
-title: "Daily Shelter and Overnight Services Availabilities"
+title: "Emergency Homeless Shelter Availabilities Across Toronto"
 author: "Cher Ning-Li"
 thanks: "Code and data are available at: https://github.com/cher-ning/shelter_occupancies"
 date: today
 date-format: long
-abstract: "In this paper I analyze the capacity vs real occupancy of shelters across Canada."
+abstract: "In this paper I analyze the occupancy and capacity of emergency homeless shelters across Toronto."
 #TODO Complete abstract after paper.
 format: pdf
 number-sections: true
@@ -24,25 +24,28 @@ data <- read_csv(here::here("data/analysis_data/analysis_data.csv"))
 
 # Introduction
 
-You can and should cross-reference sections and sub-sections. We use @citeR and @citeTidyverse
 
-The remainder of this paper is structured as follows. @sec-data....
 
+Next, the @sec-data section will introduce the dataset used for the present analysis and the data cleaning methods applied. The following @sec-results will then go more into depth to discover trends and patterns in the data while @sec-discussion will connect these findings to current literature to understand the scope and urgency of the issues at hand.  
 
 
 # Data {#sec-data}
+You can and should cross-reference sections and sub-sections. We use @citeR and @citeTidyverse
 
-Some of our data is of occupancy rate of shelters across the months (@fig-occupancyrate-vs-month), from @opendatatoronto.
+
+The dataset used for analysis is of occupancy rate of shelters in the year 2024 (@fig-occupancyrate-vs-month), from @opendatatoronto.
 
 # check if occupancy rate varies over months
 ```{r}
 #| label: fig-occupancyrate-vs-month
-#| fig-cap: Shelter Occupancy Rate in 2024 Over the Months
+#| tbl-cap: Shelter Occupancy Rate in 2024 Over the Months
 #| echo: false
 
 rate_means <- data %>% select(month, occupancy_rate) %>% group_by(month) %>% 
   summarise(mean_occupancy_rate = mean(occupancy_rate))
 
+rate_means$month <- month.abb[rate_means$month]
+  
 knitr::kable(rate_means, align ="c", col.names= c("Month", "Mean Occupancy Rate"))
 
 ```
@@ -121,7 +124,7 @@ knitr::kable(top_n(unavailable_beds,5,unavailable_beds$mean_unavailable),
 
 
 
-# Results
+# Results {#sec-results}
 
 Our results are summarized in @tbl-modelresults.
 
@@ -135,18 +138,8 @@ library(rstanarm)
 
 ```
 
-```{r}
-#| echo: false
-#| eval: true
-#| label: tbl-modelresults
-#| tbl-cap: "Explanatory models of flight time based on wing width and wing length"
-#| warning: false
 
-
-```
-
-
-# Discussion
+# Discussion {#sec-discussion}
 
 ## First discussion point {#sec-first-point}
 

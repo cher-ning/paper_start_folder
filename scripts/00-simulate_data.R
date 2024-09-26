@@ -15,8 +15,8 @@ library(tidyverse)
 set.seed(304)
 
 # Define the start and end date
-start_date <- as.Date("2018-01-01")
-end_date <- as.Date("2023-12-31")
+start_date <- as.Date("2024-01-01")
+end_date <- as.Date("2024-09-26")
 
 # Set the number of random dates you want to generate
 number_of_dates <- 100
@@ -32,7 +32,8 @@ data <-
       origin = "1970-01-01"
     ),
     capacity = rpois(n = number_of_dates, lambda = 100),
-    vacancies = rpois(n = number_of_dates, lambda = 10)
+    occupied = rpois(n = number_of_dates, lambda = 10),
+    unoccupied = rpois(n = number_of_dates, lambda = 10)
   )
 
 # Write csv

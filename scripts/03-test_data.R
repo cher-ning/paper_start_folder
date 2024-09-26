@@ -33,6 +33,9 @@ data$occupancy_rate |> max() <= 100
 data$occupancy_rate |> max() >= 0
 
 # Tests that dataset assumption of 
-# funding_capacity = actual_capacity + occupied_beds + unoccupied_beds + 
-#                   unavailable_beds holds
-data$funding_capacity
+# funding_capacity = occupied_beds + unoccupied_beds + unavailable_beds holds
+all(data$funding_capacity - data$occupied_beds - data$unoccupied_beds - 
+  data$unavailable_beds == 0)
+
+all(data$funding_capacity == data$actual_capacity + data$unavailable_beds)
+

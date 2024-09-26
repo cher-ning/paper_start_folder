@@ -1,8 +1,8 @@
-# Starter folder
+# Cher's Term Paper 1
 
 ## Overview
 
-This repo provides students with a foundation for their own projects associated with *Telling Stories with Data*. You do not need every aspect for every paper and you should delete aspects that you do not need.
+This paper will analyze the occupancy data collected from shelters around Toronto.
 
 
 ## File Structure
@@ -19,6 +19,6 @@ The repo is structured as:
 
 ## Statement on LLM usage
 
-Aspects of the code were written with the help of the auto-complete tool, Codriver. The abstract and introduction were written with the help of ChatHorse and the entire chat history is available in inputs/llms/usage.txt.
+No aspect of this paper was completed with any LLM usage.
 
 ## Some checks

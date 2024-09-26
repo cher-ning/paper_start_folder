@@ -12,10 +12,27 @@
 library(tidyverse)
 
 #### Test data ####
-data <- read_csv("data/raw_data/simulated.csv")
+data <- read_csv("data/analysis_data/analysis_data.csv")
 
-# Test there are no negative number of marriages
-data$number_of_marriage |> min() <= 0
+# Tests class of columns are what we expect
+data$date |> class() <= "Date"
+data$month |> class() <= "numeric"
+data$actual_capacity |> class() <= "numeric"
+data$funding_capacity |> class() <= "numeric"
+data$occupied_beds |> class() <= "numeric"
+data$unoccupied_beds |> class() <= "numeric"
+data$unavailable_beds |> class() <= "numeric"
+data$occupancy_rate |> class() <= "numeric"
+data$fsa |> class() <= "character"
 
-# Test for NAs
-all(is.na(data$number_of_marriage))
+# Test for absence of negative numbers in capacity_funding_bed
+data$funding_capacity |> min() >= 0
+
+# Test that occupancy_rate is between 0-100
+data$occupancy_rate |> max() <= 100  
+data$occupancy_rate |> max() >= 0
+
+# Tests that dataset assumption of 
+# funding_capacity = actual_capacity + occupied_beds + unoccupied_beds + 
+#                   unavailable_beds holds
+data$funding_capacity

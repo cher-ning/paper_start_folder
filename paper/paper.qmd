@@ -91,12 +91,11 @@ modelsummary::modelsummary(
 ```
 
 
-
-
 # Discussion
 
 ## First discussion point {#sec-first-point}
 
+If my paper were 10 pages, then should be be at least 2.5 pages. The discussion is a chance to show off what you know and what you learnt from all this. 
 
 ## Second discussion point
 
@@ -104,6 +103,7 @@ modelsummary::modelsummary(
 
 ## Weaknesses and next steps
 
+Weaknesses and next steps should also be included.
 
 \newpage
 
@@ -114,18 +114,9 @@ modelsummary::modelsummary(
 
 # Additional data details
 
-# Model details {#sec-model-details}
-
-## Posterior predictive check
-
-
-## Diagnostics
-
 
 
 \newpage
 
 
 # References
-
-

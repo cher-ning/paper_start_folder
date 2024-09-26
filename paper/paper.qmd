@@ -24,29 +24,32 @@ data <- read_csv(here::here("data/analysis_data/analysis_data.csv"))
 
 # Introduction
 
+Much like many other large cities around the world, Toronto is facing a homelessness crisis that seems to be ever-increasing. Whether it is because of environmental factors such as rising housing prices and lack of employment opportunities, or other issues such as drug abuse and mental health struggles, the homeless population of Toronto has risen to an alarming 10,811 in May 2023 (#cite CBC). The city council has recognized the urgency of this problem, declaring homelessness an emergency, and pledged their full efforts towards helping the homeless population move into safe homes (#CBC). Since then, the city of Toronto has focussed on securing more financial support from the provincial and federal government, requesting up to $25 million to fund various housing projects. Notably, the Canada-Ontario Housing Benefit (COHB) aimed to move 1,600 — 2,000 households access and transition into permanent housing in 2023-2024 (#CBC).
 
+So, how did these efforts turn out? Analyzing Toronto's shelter occupancy data from 2024, we do not see optimistic results. Average occupancy rate of emergency shelters per night remains at 99%, with no significant decrease across the months (#cite dataset). Despite the evident high demand, there is even a decrease, albeit small, in shelters' funding capacity over the months (#cite dataset).
 
-Next, the @sec-data section will introduce the dataset used for the present analysis and the data cleaning methods applied. The following @sec-results will then go more into depth to discover trends and patterns in the data while @sec-discussion will connect these findings to current literature to understand the scope and urgency of the issues at hand.  
+In this paper, emergency shelter occupancy and availability will be compared across different months as well as different regions of Toronto to search for patterns or fluctutations in demand. The region of each shelter will be determined by its forward sorting area (FSA) code, or the first three digits of its postal code. As well, the regions that observe the highest frequency of failing to make efficient use of funding are identified as potential problem areas; further investigation into potential causes would be beneficial to understand if there are improvements that can be made so that the limited available funding can be maximized.
 
+To achieve this, the @sec-data section will introduce the Toronto Shelter & Support Services dataset used for the present analysis and the data cleaning methods applied. The following @sec-discussion will then go more into depth to apply context to the patterns present in the data, aiming to understand the scope and urgency of the issues at hand. 
 
 # Data {#sec-data}
 You can and should cross-reference sections and sub-sections. We use @citeR and @citeTidyverse
 
 
-The dataset used for analysis is of occupancy rate of shelters in the year 2024 (@fig-occupancyrate-vs-month), from @opendatatoronto.
+The dataset used for analysis is of occupancy rate of shelters in the year 2024 (@tbl-occupancyrate-vs-month), from @opendatatoronto.
 
 # check if occupancy rate varies over months
 ```{r}
-#| label: fig-occupancyrate-vs-month
+#| label: tbl-occupancyrate-vs-month
 #| tbl-cap: Shelter Occupancy Rate in 2024 Over the Months
 #| echo: false
 
-rate_means <- data %>% select(month, occupancy_rate) %>% group_by(month) %>% 
-  summarise(mean_occupancy_rate = mean(occupancy_rate))
+rate_means <- data %>% select(month, occupancy_rate, funding_capacity) %>% group_by(month) %>% 
+  summarise(mean_occupancy_rate = mean(occupancy_rate), mean_capacity = mean(funding_capacity))
 
 rate_means$month <- month.abb[rate_means$month]
   
-knitr::kable(rate_means, align ="c", col.names= c("Month", "Mean Occupancy Rate"))
+knitr::kable(rate_means, align ="c", col.names= c("Month", "Mean Occupancy Rate", "Mean Funding Capacity"))
 
 ```
 
@@ -67,6 +70,10 @@ knitr::kable(top_n(fsa_shelters,5,numshelters), align ="c", col.names= c("FSA", 
 
 ```
 ```{r}
+#| label: fig-numshelters-vs-fsa
+#| fig-cap: Number of Shelters in Each FSA
+#| echo: false
+
 hist(fsa_shelters$numshelters)
 ```
 
@@ -140,10 +147,9 @@ library(rstanarm)
 
 
 # Discussion {#sec-discussion}
+Additionally, the distribution of shelter locations across the city's different forward sortation areas (FSA), or the first three digits of a zip code, displays that there are particular areas with higher demand than others. For example, particular blocks in Old Toronto are evidently areas that require higher attention, as they are among the FSAs to receive most funding as well as the ones that have highest number of shelters (#cite dataset).
 
 ## First discussion point {#sec-first-point}
-
-If my paper were 10 pages, then should be be at least 2.5 pages. The discussion is a chance to show off what you know and what you learnt from all this. 
 
 ## Second discussion point
 

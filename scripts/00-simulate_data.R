@@ -21,7 +21,7 @@ end_date <- as.Date("2024-09-26")
 # Set the number of random dates you want to generate
 number_of_dates <- 100
 
-data <-
+simulated_data <-
   tibble(
     dates = as.Date(
       runif(
@@ -31,10 +31,11 @@ data <-
       ),
       origin = "1970-01-01"
     ),
-    capacity = rpois(n = number_of_dates, lambda = 100),
-    occupied = rpois(n = number_of_dates, lambda = 10),
-    unoccupied = rpois(n = number_of_dates, lambda = 10)
+    capacity = rpois(n = number_of_dates, lambda = 50),
+    occupied = min(capacity, rpois(n = number_of_dates, lambda = 50)),
+    unoccupied = capacity - occupied,
+    occupancy_rate = (occupied/capacity) *100
   )
 
 # Write csv
-write_csv(data, file = "data/raw_data/simulated.csv")
+write_csv(simulated_data, file = "data/raw_data/simulated.csv")

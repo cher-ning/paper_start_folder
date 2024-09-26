@@ -1,6 +1,5 @@
 ---
 title: "Daily Shelter and Overnight Services Availabilities"
-#subtitle: "Marriage Data Cleaning"
 author: "Cher Ning-Li"
 thanks: "Code and data are available at: https://github.com/cher-ning/shelter_occupancies"
 date: today
@@ -33,34 +32,39 @@ The remainder of this paper is structured as follows. @sec-data....
 
 # Data {#sec-data}
 
-Some of our data is of marriages (@fig-marriages), from @opendatatoronto.
+Some of our data is of occupancy rate of shelters across the months (@fig-occupancyrate-vs-month), from @opendatatoronto.
 
+#switch to table here
 ```{r}
 #| label: fig-occupancyrate-vs-month
 #| fig-cap: Shelter Occupancy Rate in 2024 Over the Months
 #| echo: false
 
-#data |> 
-#  ggplot(aes(x = date, y = occupancy_rate)) + 
-#  geom_point()
 
+rate_means <- data %>% select(month, occupancy_rate) %>% group_by(month) %>% 
+  summarise(mean_occupancy_rate = mean(occupancy_rate))
 
-hist(data$occupied_beds)
+knitr::kable(rate_means, align ="c", col.names= c("Month", "Mean Occupancy Rate"))
+
+```
+# add summary table of funding capacity here
+```{r}
+#| label: fig-fundingcapacity-summary
+#| fig-cap: Funding Capacities of Toronto Emergency Shelters
+#| echo: false
+
+summary(data$funding_capacity)
+```
+
+```{r}
+#| label: fig-fundingcapacity-histogram
+#| fig-cap: Funding Capacities of Toronto Emergency Shelters
+#| echo: false
+
+hist(data$funding_capacity)
 ```
 
 We can see that the number of marriages fluctuates across the years.
-
-
-# Model
-
-
-## Model set-up
-
-
-We run the model in R [@citeR] using the `rstanarm` package of @rstanarm. We use the default priors from `rstanarm`.
-
-
-### Model justification
 
 
 # Results

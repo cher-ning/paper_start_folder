@@ -17,22 +17,30 @@ bibliography: references.bib
 #| warning: false
 #| message: false
 
+#install.packages("tidyverse")
+#install.packages("ggplot2")
+#install.packages("knitr")
 library(tidyverse)
 library(ggplot2)
+library(knitr)
 
 data <- read_csv(here::here("data/analysis_data/analysis_data.csv"))
 ```
 
-
+\newpage
 # Introduction
 
 Much like many other large cities around the world, Toronto is facing a homelessness crisis that seems to be ever-increasing. Whether it is because of environmental factors such as rising housing prices and lack of employment opportunities, or other issues such as drug abuse and mental health struggles, the homeless population of Toronto has risen to an alarming 10,811 in May 2023 [@cbcArticle]. The city council has recognized the urgency of this problem, declaring homelessness an emergency, and pledged their full efforts towards helping the homeless population move into safe homes [@cbcArticle]. Since then, the city of Toronto has focussed on securing more financial support from the provincial and federal government, requesting up to $25 million to fund various housing projects. Notably, the Canada-Ontario Housing Benefit (COHB) aimed to move 1,600-2,000 households access and transition into permanent housing in 2023-2024 [@cbcArticle].
 
-So, how did these efforts turn out? Analyzing Toronto's shelter occupancy data from 2024, we do not see optimistic results. Average occupancy rate of emergency shelters per night remains at 99%, with no significant decrease across the months [@shelterDataset]. Despite the evident high demand, there is even a decrease, albeit small, in shelters' funding capacity over the months [@shelterDataset].
+In addition to these long-term plans that aim to move homeless individuals into stable homes, temporary shelters are also crucial during this transition process to provide short-term safety and resources. Research has shown that without access to shelter services, individuals can be pushed into substance-use relapses and hospitalizations, food insecurity, institutional circuitry through criminal justice systems, and other factors of instability [@citeKerman]. Shelters also provide useful data to track and understand the current state of the city's battle against this crisis.
+
+With that in mind, how did the city council's efforts turn out? Analyzing Toronto's shelter occupancy data from 2024, we do not see optimistic results. Average occupancy rate of emergency shelters per night remains at 99%, with no significant decrease across the months [@shelterDataset]. Despite the evident high demand, there is even a decrease, albeit small, in shelters' funding capacity over the months [@shelterDataset].
 
 In this paper, emergency shelter occupancy and availability will be compared across different months as well as different regions of Toronto to search for patterns or fluctutations in demand. The region of each shelter will be determined by its forward sorting area (FSA) code, or the first three digits of its postal code. As well, the regions that observe the highest frequency of failing to make efficient use of funding are identified as potential problem areas; further investigation into potential causes would be beneficial to understand if there are improvements that can be made so that the limited available funding can be maximized.
 
 To achieve this, @sec-data will introduce the Toronto Shelter & Support Services dataset used for the present analysis and the data cleaning methods applied. The following @sec-discussion will then go more into depth to apply context to the patterns present in the data, aiming to understand the scope and urgency of the issues at hand. 
+
+\newpage
 
 # Data {#sec-data}
 
@@ -40,11 +48,13 @@ To achieve this, @sec-data will introduce the Toronto Shelter & Support Services
 
 The dataset used for analysis is of shelter occupancy in the year 2024 [@shelterDataset], from Open Data Toronto [@opendatatoronto]. The data is updated daily by the Toronto Shelter & Support Services and has the Open Data License (@sec-license). However, one limitation it faces is that it is unaudited, therefore there are limited verification methods to ensure that the shelter programs' records are accurate to their actual situation. 
 
-All shelters in this dataset are classified as either Emergency or Transitional programs, with Transitional locations providing more specialized programming and being exclusively offered to eligible individuals [@shelterDataset]. With consideration for the greater accessibility of Emergency programs to the entire homeless population as well as the greater number of them shelters compared to Transitional, this analysis will focus on Emergency programs only [@shelterDataset]. As well, all recorded shelters either measure capacity based on number of beds or rooms; similarly, this analysis will focus only on bed-based capacity shelters due to its greater prevalence [@shelterDataset]. This means that all entries pertaining to non-Toronto based, Transitional type, or room-based capacity shelters were not considered in this analysis. It should also be noted that as this dataset contains only data from this year, only data from January 1 to September 26 is accessible.
+All shelters in this dataset are classified as either Emergency or Transitional programs, with Transitional locations providing more specialized programming and being exclusively offered to eligible individuals [@shelterDataset]. With consideration for the greater accessibility of Emergency programs to the entire homeless population as well as the greater number of them shelters compared to Transitional, this analysis will focus on Emergency programs only [@shelterDataset]. As well, all recorded shelters either measure capacity based on number of beds or rooms; similarly, this analysis will focus only on bed-based capacity shelters due to its greater prevalence [@shelterDataset]. This means that all entries pertaining to non-Toronto based, Transitional type, or room-based capacity shelters were not considered in this analysis. It should also be noted that as this dataset contains only data from this year, only data from January 1 to September 26 was accessible as of writing this paper, and therefore only these entries were utilized in analysis. 
 
 With the remaining data entries, the variables of interest were the shelter's location, funding capacity, actual capacity, occupied beds, unoccupied beds, unavailable beds, and occupancy rate. Funding capacity refers to the maximum number of beds the location is able to offer, and represents the sum of actual capacity and unavailable beds. Unavailable beds refers to the number of spaces that are out of service due to logistical reasons [@shelterDataset]. Actual capacity represents the number of beds that are usable per night, and should be the sum of occupied and unoccupied beds. After the dataset was cleaned for entries with empty values and invalid negative values, all entries in the remaining set were shown to adhere to these relations when tested.
 
 The R Programming language [@citeR] was used for all data cleaning, testing, and analysis. The packages `opendatatoronto` [@opendatatoronto], `tidyverse` [@citeTidyverse], `dplyr` [@citeDplyr], and `readr` [@citeReadr] were used to simulate and download data. Packages `tidyverse` [@citeTidyverse] and `janitor` [@citeJanitor] were then used to clean and test the downloaded dataset.
+
+\newpage
 
 ## Results {#data-findings}
 This following section will use packages `ggplot2` [@citeggplot] and `knitr` [@citeKnitr] to generate several plots and tables to assist with visualizing patterns in the dataset.
@@ -66,8 +76,7 @@ knitr::kable(rate_means, align ="c", col.names= c("Month", "Occupancy Rate"))
 
 ```
 
-The occupancy rate can then be broken down into the mean funding capacity, actual capacity, and real number of occupied beds per month. The high occupancy rate observed in @tbl-occupancyrate-vs-month makes it unsurprising to see the number of occupied beds consistently match so closely to the shelters' actual capacity. Notably, there is a significant decrease in funding around March, which will be further discussed in @sec-discussion. It is also important to note that despite the near 100% occupancy rate, there is often a gap between the funding capacity and actual capacity, suggesting that sometimes the given facilities may not be utilized at their maximum potential. 
-
+The occupancy rate can then be broken down into the mean funding capacity, actual capacity, and real number of occupied beds per month. The high occupancy rate observed in @tbl-occupancyrate-vs-month makes it unsurprising to see the number of occupied beds consistently match so closely to the shelters' actual capacity in @fig-occupancy-vs-month. Notably, @fig-occupancy-vs-month also shows a significant decrease in funding around March, which will be further discussed in @sec-discussion. It is also important to note that despite the near 100% occupancy rate, there is often a gap between the funding capacity and actual capacity, suggesting that sometimes the given facilities may not be utilized at their maximum potential. 
 ```{r}
 #| label: fig-occupancy-vs-month
 #| fig-cap: Shelter Capacity and Occupancy From Jan to Sep 2024
@@ -90,9 +99,7 @@ ggplot(occupancy_means, aes(x=month)) +
   scale_x_continuous(breaks = seq(1, 9, by = 1))
 
 ```
-
 Another dimension to consider is the geographical region of the shelters. Still focussing on the mean number of occupied beds, @fig-regionoccupancy shows a rather wide spread across different FSA regions, ranging from a minimum of 18.60 to a maximum of 87.74. Some of the regions reporting on the higher end include M5H, M6P, and M2H, which are neighbourhoods in Old Toronto, North York, and around High Park [@citeFSA].
-
 ```{r}
 #| label: fig-regionoccupancy
 #| fig-cap: Average Bed Occupancy of Shelters in Each FSA Region
@@ -105,13 +112,12 @@ ggplot(region_occupancy, aes(x=mean_occupied)) + geom_histogram(binwidth = 7) +
   labs(x = "Mean Occupancy in Each FSA", y = "Count") + theme_classic()
 ```
 
-
 ```{r}
 #| echo: false
 #| include: false
+#| eval: true
 
 ordered_region_occupancy <- region_occupancy[order(region_occupancy$mean_occupied, decreasing = TRUE), ]
-ordered_region_occupancy
 ```
 
 Another dimension to consider in analyzing which regions may be experiencing higher rates of homelessness is the number of distinct shelter locations made available there. Sorting for unique shelter ID's across the 32 FSA regions in this data set, @tbl-fsa-numshelters and @fig-numshelters-vs-fsa show that regions most commonly have only 1-2 shelters each, but there are areas with particularly high density. Specifically, the region M5A located in Old Toronto [@citeFSA] has 7 shelters, which is several times the number placed in other regions.
@@ -142,60 +148,47 @@ ggplot(fsa_shelters, aes(x=numshelters)) + geom_histogram(binwidth = 1) +
   labs(x = "Number of Shelters in Each FSA", y = "Count") + theme_classic()
 ```
 
+As shown in @fig-occupancy-vs-month, there is often a gap between a shelter's funding capacity and its actual capacity. This difference, reported as the number of unavailable beds in this dataset, represents resources that should have been available to the homeless population but was not on a particular night, either due to maintenance, renovations, outbreaks, or pest control issues [@shelterDataset]. 
 
-
-```{r}
-#| label: fig-fundingcapacity-histogram
-#| fig-cap: "Funding Capacities of Toronto Emergency Shelters"
-#| echo: false
-
-hist(data$funding_capacity)
-```
+Using similar methods as above to group data by FSA code finds that the average number of unavailable bed spaces per region is 1.30. Despite this promisingly low number, a closer look at the distribution in @tbl-unavailabilities-by-fsa reveals that there is a significantly higher average of unavailability in M2N and M5G, representing neighbourhoods in North York and Old Toronto respectively [@citeFSA]. The implications of this finding will be discussed further in @sec-discussion.
 
 ```{r}
-#| label: fig-fsa-fundingcapacity
-#| eval: true
-#| tbl-cap: "Funding Capacities of Toronto Emergency Shelters"
-#| echo: false
-
-funding_means <- data %>% select(fsa, funding_capacity) %>% group_by(fsa) %>% 
-  summarise(mean_fundingcap = mean(funding_capacity))
-
-funding_means <- funding_means[order(funding_means$mean_fundingcap, decreasing = TRUE), ]
-
-#knitr::kable(top_n(funding_means,5,mean_fundingcap), align ="c", col.names= c("FSA", "Mean Funding Capacity"))
-hist(funding_means$mean_fundingcap)
-```
-
-```{r}
-#| label: fig-unavailabilities-by-fsa
+#| label: tbl-unavailabilities-by-fsa
 #| eval: true
 #| tbl-cap: "Number of Unavailable Beds/Night At Different FSAs"
 #| echo: false
 
 unavailable_beds <- data %>% select(fsa, unavailable_beds) %>% group_by(fsa) %>% 
-  summarise(mean_unavailable = mean(unavailable_beds))
+  summarise(mean_unavailable = round(mean(unavailable_beds),3))
 
 unavailable_beds <- unavailable_beds[order(unavailable_beds$mean_unavailable, decreasing = TRUE), ]
 
 knitr::kable(top_n(unavailable_beds,5,unavailable_beds$mean_unavailable), 
              align ="c", col.names= c("FSA", "Average Number of Unavailable Beds"))
-#hist(unavailable_beds$mean_unavailable)
+```
+
+```{r}
+#| eval: true
+#| include: false
+#| echo: false
+
+summary(unavailable_beds)
 ```
 
 
 # Discussion {#sec-discussion}
+
 Additionally, the distribution of shelter locations across the city's different forward sortation areas (FSA), or the first three digits of a zip code, displays that there are particular areas with higher demand than others. For example, particular blocks in Old Toronto are evidently areas that require higher attention, as they are among the FSAs to receive most funding as well as the ones that have highest number of shelters (#cite dataset).
 
-## First discussion point {#sec-first-point}
+## Main Findings {#sec-discussion-findings}
+Analysis of this dataset in @data-findings yielded several conclusions about the still-prevalent homelessness crisis here in Toronto. First, the consistently high occupancy rate throughout the year suggests that the need for housing resources remains high, and is not particularly affected by time of year. However, as observed in @fig-occupancy-vs-month, there is a relatively steep dip in funding capacity around March that is not preceded by a dip in demand. This decrease is potentially due to the city emphasizing their efforts during winter months, as those are intuitively the most dangerous months to unable to access warmth and shelter [@cbcArticle]. 
 
-## Second discussion point
 
-## Third discussion point
+## Implications {#sec-discussion-implications}
+The observations made from this dataset reveal that the city council's effort have seen limited efficacy. Occupancy rates at emergency shelters remains alarmingly high all across Toronto with no sign of decreasing. Though these short-term solutions 
 
-## Weaknesses and next steps
+## Limitations and Next Steps {#sec-discussion-limitations}
 
-Weaknesses and next steps should also be included.
 
 \newpage
 

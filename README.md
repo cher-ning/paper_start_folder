@@ -1,7 +1,7 @@
-# The Emergency Homeless Shelter Availability Across Toronto are Insufficient For Overwhelming Demand
+# The Emergency Homeless Shelter Availability Across Toronto is Insufficient For Overwhelming Demand
 
 ## Description
-This repository contains all files needed to generate the graphs and pdf for the paper *The Emergency Homeless Shelter Availability Across Toronto are Insufficient For Overwhelming Demand*.
+This repository contains all files needed to generate the graphs and pdf for the paper *The Emergency Homeless Shelter Availability Across Toronto is Insufficient For Overwhelming Demand*.
 
 Some of the R code used to create this work was adapted from Alexander (2023).
 

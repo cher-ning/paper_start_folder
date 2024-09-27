@@ -31,10 +31,13 @@ simulated_data <-
       ),
       origin = "1970-01-01"
     ),
-    capacity = rpois(n = number_of_dates, lambda = 50),
-    occupied = min(capacity, rpois(n = number_of_dates, lambda = 50)),
-    unoccupied = capacity - occupied,
-    occupancy_rate = (occupied/capacity) *100
+    actual_capacity = rpois(n = number_of_dates, lambda = 50),
+    funding_capacity = max(rpois(n = number_of_dates, lambda = 50), 
+                           rpois(n = number_of_dates, lambda = 60)),
+    occupied = min(actual_capacity, rpois(n = number_of_dates, lambda = 50)),
+    unoccupied = actual_capacity - occupied,
+    unavailable = funding_capacity - actual_capacity,
+    occupancy_rate = round((occupied/actual_capacity) *100, 2)
   )
 
 # Write csv

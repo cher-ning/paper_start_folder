@@ -8,6 +8,7 @@ abstract: "In this paper I analyze the occupancy and capacity of emergency homel
 #TODO Complete abstract after paper.
 format: pdf
 number-sections: true
+toc: true
 bibliography: references.bib
 ---
 
@@ -24,21 +25,29 @@ data <- read_csv(here::here("data/analysis_data/analysis_data.csv"))
 
 # Introduction
 
-Much like many other large cities around the world, Toronto is facing a homelessness crisis that seems to be ever-increasing. Whether it is because of environmental factors such as rising housing prices and lack of employment opportunities, or other issues such as drug abuse and mental health struggles, the homeless population of Toronto has risen to an alarming 10,811 in May 2023 (#cite CBC). The city council has recognized the urgency of this problem, declaring homelessness an emergency, and pledged their full efforts towards helping the homeless population move into safe homes (#CBC). Since then, the city of Toronto has focussed on securing more financial support from the provincial and federal government, requesting up to $25 million to fund various housing projects. Notably, the Canada-Ontario Housing Benefit (COHB) aimed to move 1,600 — 2,000 households access and transition into permanent housing in 2023-2024 (#CBC).
+Much like many other large cities around the world, Toronto is facing a homelessness crisis that seems to be ever-increasing. Whether it is because of environmental factors such as rising housing prices and lack of employment opportunities, or other issues such as drug abuse and mental health struggles, the homeless population of Toronto has risen to an alarming 10,811 in May 2023 (#cite CBC). The city council has recognized the urgency of this problem, declaring homelessness an emergency, and pledged their full efforts towards helping the homeless population move into safe homes (#CBC). Since then, the city of Toronto has focussed on securing more financial support from the provincial and federal government, requesting up to $25 million to fund various housing projects. Notably, the Canada-Ontario Housing Benefit (COHB) aimed to move 1,600-2,000 households access and transition into permanent housing in 2023-2024 (#CBC).
 
 So, how did these efforts turn out? Analyzing Toronto's shelter occupancy data from 2024, we do not see optimistic results. Average occupancy rate of emergency shelters per night remains at 99%, with no significant decrease across the months (#cite dataset). Despite the evident high demand, there is even a decrease, albeit small, in shelters' funding capacity over the months (#cite dataset).
 
 In this paper, emergency shelter occupancy and availability will be compared across different months as well as different regions of Toronto to search for patterns or fluctutations in demand. The region of each shelter will be determined by its forward sorting area (FSA) code, or the first three digits of its postal code. As well, the regions that observe the highest frequency of failing to make efficient use of funding are identified as potential problem areas; further investigation into potential causes would be beneficial to understand if there are improvements that can be made so that the limited available funding can be maximized.
 
-To achieve this, the @sec-data section will introduce the Toronto Shelter & Support Services dataset used for the present analysis and the data cleaning methods applied. The following @sec-discussion will then go more into depth to apply context to the patterns present in the data, aiming to understand the scope and urgency of the issues at hand. 
+To achieve this, @sec-data will introduce the Toronto Shelter & Support Services dataset used for the present analysis and the data cleaning methods applied. The following @sec-discussion will then go more into depth to apply context to the patterns present in the data, aiming to understand the scope and urgency of the issues at hand. 
 
 # Data {#sec-data}
-You can and should cross-reference sections and sub-sections. We use @citeR and @citeTidyverse
 
+## Overview {#data-overview}
 
-The dataset used for analysis is of occupancy rate of shelters in the year 2024 (@tbl-occupancyrate-vs-month), from @opendatatoronto.
+The dataset used for analysis is of shelter occupancy in the year 2024 (#cite dataset), from @opendatatoronto. The data is updated daily by the Toronto Shelter & Support Services and has the Open Data License @tphlicense. However, one limitation it faces is that it is unaudited, therefore there are limited verification methods to ensure that the shelter programs' records are accurate to their actual situation. 
 
-# check if occupancy rate varies over months
+All shelters in this dataset are classified as either Emergency or Transitional programs, with Transitional locations providing more specialized programming and being exclusively offered to eligible individuals (#cite dataset). With consideration for the greater accessibility of Emergency programs to the entire homeless population as well as the greater number of them shelters compared to Transitional, this analysis will focus on Emergency programs only. As well, all recorded shelters either measure capacity based on number of beds or rooms; similarly, this analysis will focus only on bed-based capacity shelters due to its greater prevalence. This means that all entries pertaining to non-Toronto based, Transitional type, or room-based capacity shelters were not considered in this analysis. 
+
+With the remaining data entries, the variables of interest were the shelter's location, funding capacity, actual capacity, occupied beds, unoccupied beds, unavailable beds, and occupancy rate. Funding capacity refers to the maximum number of beds the location is able to offer, and represents the sum of actual capacity and unavailable beds. Unavailable beds refers to the number of spaces that are out of service due to logistical reasons (#cite dataset). Actual capacity represents the number of beds that are usable per night, and should be the sum of occupied and unoccupied beds. After the dataset was cleaned for entries with empty values and invalid negative values, all entries in the remaining set were shown to adhere to these relations when tested.
+
+The R Programming language [@citeR] was used for all data cleaning, testing, and analysis. The packages `opendatatoronto` [@opendatatoronto], `tidyverse` [@citeTidyverse], `dplyr` [@citeDplyr], and `readr` [@citeReadr] were used to simulate and download data. Packages `tidyverse` [@citeTidyverse] and `janitor` [@citeJanitor] were then used to clean and test the downloaded dataset.
+
+## Results {#data-findings}
+
+(# check if occupancy rate varies over months
 ```{r}
 #| label: tbl-occupancyrate-vs-month
 #| tbl-cap: Shelter Occupancy Rate in 2024 Over the Months
@@ -55,7 +64,7 @@ knitr::kable(rate_means, align ="c", col.names= c("Month", "Mean Occupancy Rate"
 
 
 
-# first find num shelters per fsa
+(#first find num shelters per fsa
 ```{r}
 #| label: fig-fsa-numshelters
 #| eval: true
@@ -96,7 +105,7 @@ hist(region_occupancy$mean_occupied)
 hist(data$funding_capacity)
 ```
 
-# discuss summary stats of funding capacity in text, can consider to only include top few rows of this table
+(#discuss summary stats of funding capacity in text, can consider to only include top few rows of this table
 ```{r}
 #| label: fig-fsa-fundingcapacity
 #| eval: true
@@ -129,23 +138,6 @@ knitr::kable(top_n(unavailable_beds,5,unavailable_beds$mean_unavailable),
 ```
 
 
-
-
-# Results {#sec-results}
-
-Our results are summarized in @tbl-modelresults.
-
-```{r}
-#| echo: false
-#| eval: true
-#| warning: false
-#| message: false
-
-library(rstanarm)
-
-```
-
-
 # Discussion {#sec-discussion}
 Additionally, the distribution of shelter locations across the city's different forward sortation areas (FSA), or the first three digits of a zip code, displays that there are particular areas with higher demand than others. For example, particular blocks in Old Toronto are evidently areas that require higher attention, as they are among the FSAs to receive most funding as well as the ones that have highest number of shelters (#cite dataset).
 
@@ -164,8 +156,8 @@ Weaknesses and next steps should also be included.
 \appendix
 
 # Appendix {-}
-
-
+## Data License Information
+Contains information licensed under the Open Government Licence – Toronto.
 # Additional data details
 
 

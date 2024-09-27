@@ -4,7 +4,7 @@ author: "Cher Ning-Li"
 thanks: "Code and data are available at: <https://github.com/cher-ning/shelter_occupancies>"
 date: 09-27-2024
 date-format: long
-abstract: "This paper analyzes the occupancy and capacity of emergency homeless shelters across Toronto, noting the high demand across all regions throughout the months. Dividing analysis of the data into different neighbourhoods, areas in Old Toronto are identified to have higher bed occupancies and number of shelters. Similarly, problem areas in North York and Old Toronto with patterns of inability to provide the number of bed spaces promised are also identified. Combining with the context of the current literature researching homelessness, these findings indicate a high urgency for the Toronto city council to implement effective short-term and long-term support programs to target the current homelessness crisis."
+abstract: "This paper analyzes the occupancy and capacity of emergency homeless shelters across Toronto, noting the high demand across all regions throughout the months. Dividing analysis of the data into different neighbourhoods, areas in Old Toronto are identified to have higher bed occupancies and number of shelters. As well, problem areas in North York and Old Toronto with patterns of inability to provide the number of bed spaces promised are identified. Combining with the context of the current literature on homelessness, these findings indicate a high urgency for the Toronto city council to implement effective short-term and long-term support programs to target the current homelessness crisis."
 format: pdf
 number-sections: true
 toc: true
@@ -128,7 +128,7 @@ knitr::kable(ordered_region_occupancy,
              col.names= c("FSA", "Mean Number of Beds Occupied"))
 ```
 
-Another variable to consider when searching for patterns between geographical region and rates of homelessness is the number of distinct shelter locations made available there. Sorting for unique shelter ID's across the 32 FSA regions in this data set, @tbl-fsa-numshelters and @fig-numshelters-vs-fsa show that regions most commonly have only 1-2 shelters each, but there are areas with particularly high density. Specifically, the region M5A located in Old Toronto [@citeFSA] has 7 shelters, which is several times the number placed in other regions.
+Another variable to consider when searching for patterns between geographical region and rates of homelessness is the number of distinct shelter locations made available there. Sorting for unique shelter ID's across the 32 FSA regions in this data set, @tbl-fsa-numshelters and @fig-numshelters-vs-fsa show that regions most commonly have only 1-2 shelters each, but there are areas with particularly high density. Specifically, the region M5A located in Old Toronto [@citeFSA] has 7 shelters, which is several times the number available in other regions.
 
 ```{r}
 #| label: tbl-fsa-numshelters
@@ -160,11 +160,9 @@ ggplot(fsa_shelters, aes(x=numshelters)) + geom_histogram(binwidth = 1) +
   labs(x = "Number of Shelters in Each FSA", y = "Count") + theme_classic()
 ```
 
-As shown previously in @fig-occupancy-vs-month, there is often a gap between a shelter's funding capacity and its actual capacity. This difference, reported as the number of unavailable beds in this dataset, represents resources that should have been available to the homeless population but was not on a particular night, either due to maintenance, renovations, outbreaks, or pest control issues [@shelterDataset]. 
+As shown previously in @fig-occupancy-vs-month, there is often a gap between a shelter's funding capacity and its actual capacity. This difference, reported as the number of unavailable beds in this dataset, represents resources that should have been available to the homeless population but was not, either due to maintenance, renovations, outbreaks, or pest control issues [@shelterDataset]. 
 
-Using similar methods as above to group data by FSA code, the average number of unavailable bed spaces per region is found to be 1.30.
-
-Despite this promisingly low number, @tbl-unavailabilities-by-fsa displays some of the FSAs with highest average unavailability per night and shows that the distribution across regions is noticeably skewed. M2N and M5G especially stand out, representing neighbourhoods in North York and Old Toronto respectively [@citeFSA]. The unavailability as a percentage of funding capacity was also calculated to verify whether this gap could be simply proportional to the total capacity in these regions, and results indicate that this is not the case. Even when looking at only the unavailability as a percentage, these two regions are still significantly higher than others. The implications of this finding will be discussed further in @sec-discussion.
+Using similar methods as above to group data by FSA code, the average number of unavailable bed spaces per region is found to be 1.30. Despite this promisingly low number, @tbl-unavailabilities-by-fsa displays some of the FSAs with highest average unavailability per night and shows that the distribution across regions is noticeably skewed. M2N and M5G especially stand out, representing neighbourhoods in North York and Old Toronto respectively [@citeFSA]. The unavailability as a percentage of funding capacity was also calculated to verify whether this gap could be simply proportional to the total capacity in these regions, and results indicate that this is not the case. Even when looking at only the unavailability as a percentage, these two regions are still significantly higher than others. The implications of this finding will be discussed further in @sec-discussion.
 
 ```{r}
 #| label: tbl-unavailabilities-by-fsa
@@ -192,30 +190,30 @@ knitr::kable(top_unavailability,
 ```
 
 ```{r}
-#| eval: true
+#| eval: false
 #| include: false
 #| echo: false
 
-summary(unavailable_beds)
+# summary(unavailable_beds)
 ```
 
 
 # Discussion {#sec-discussion}
 
 ## Main Findings {#sec-discussion-findings}
-Analysis of this dataset in @sec-data-findings yielded several conclusions about the still-prevalent homelessness crisis here in Toronto. First, the consistently high occupancy rate throughout the year [@tbl-occupancyrate-vs-month] suggests that the need for housing resources remains high, and is not particularly affected by time of year. However, as observed in @fig-occupancy-vs-month, there is a relatively steep dip in funding capacity around March that is not preceded by a noticeable dip in demand. This decrease is potentially due to the city emphasizing their efforts during winter months, as those are intuitively the most dangerous months for those living on the streets [@cbcArticle]. As a result, when winter ends and weather begins warming up in March, the additional funding is no longer available, causing this large and sudden decrease.
+Analysis of this dataset in @sec-data-findings yielded several conclusions about the still-prevalent homelessness crisis here in Toronto. First, the consistently high occupancy rate [@tbl-occupancyrate-vs-month] suggests that the need for housing resources remains high and is not particularly affected by time of year. However, as observed in @fig-occupancy-vs-month, there is a relatively steep dip in funding capacity around March that is not preceded by any noticeable dip in demand. This decrease is potentially due to the city emphasizing their efforts during winter months, as those are intuitively the most dangerous months for those living on the streets [@cbcArticle]. As a result, when winter ends and weather begins warming up in March, the additional funding is no longer available, causing this large and sudden decrease.
 
-Moving onto FSA-based observations, it was found that there are several neighbourhoods including around Old Toronto and North York that have some of the highest concentration of emergency shelters and have highest funding capacities [@tbl-fsa-numshelters, @fig-numshelters-vs-fsa]. Despite the high occupancy [@fig-regionoccupancy] in these specific areas, it is important to remember that these findings are purely correlational and not causational. From this data alone, it is impossible to conclude whether these areas initially had greater rates of homelessness, thereby leading the government to spend more funds building shelters here, or that it is the higher concentration and availability of shelters here that will attract more homeless population to migrate here. Despite our lack of understanding of the two variable's true relationship, the correlation alone is able to indicate that emergency services are able to effectively reach the homeless population when they are placed here. When the city council is making policies and investments into emergency resources, it will be imperative to balance out their prioritization of these major areas of high demand versus areas which presently have less access, but may have comparatively lower demand.
+Moving onto FSA-based observations, it was found that there are several neighbourhoods, including some around Old Toronto and North York, that report the highest concentrations of emergency shelters and the highest funding capacities (@tbl-fsa-numshelters). Despite the high occupancy in these specific areas, as shown in [@fig-regionoccupancy], it is important to remember that these findings are purely correlational and not causational. From this data alone, it is impossible to conclude whether these areas initially had greater rates of homelessness, thereby leading the government to spend more funds building shelters here, or that it is the higher concentration and availability of shelters here that will attract more homeless population to migrate here. Despite our lack of understanding of the two variable's true relationship, the correlation alone is able to indicate that emergency services are able to effectively reach the homeless population when they are placed here. When the city council is making policies and investments into emergency resources, it will be imperative to balance out their prioritization of these major areas of high demand versus areas which presently have less access, but may have comparatively lower demand.
 
-Next, analysis of the average bed unavailability across different FSAs revealed two specific regions of concern, M2N and M5G, which report notably higher numbers of beds being out of service each night [@tbl-unavailabilities-by-fsa]. This is an alarming observation worthy of further investigation, as it indicates some sort of ongoing issue with the shelters in these areas that fails to convert shelter funding to actual accessible resources for the vulnerable population. Unless this pattern is due to unavoidable circumstances or planned projects, such as construction for shelter expansion, the administrative policy and organizational structures here may need to be evaluated to locate potential causes.
+Next, analysis of the average bed unavailability across different FSAs revealed two specific regions of concern, M2N and M5G, which report notably higher numbers of beds being out of service each night (@tbl-unavailabilities-by-fsa). This is an alarming observation worthy of further investigation, as it indicates some sort of ongoing issue with the shelters in these areas that fails to convert shelter funding to actual accessible resources for the vulnerable population. Unless this pattern is due to unavoidable circumstances or planned projects, such as construction for shelter expansion, the administrative policy and organizational structures here may need to be evaluated to locate potential causes.
 
 ## Implications {#sec-discussion-implications}
-The observations made from this dataset reveal that the city council's effort have seen limited efficacy so far. Occupancy rates at emergency shelters remains alarmingly high all across Toronto with no sign of decreasing. This indicates that the city council still needs to continue efforts to find effective long-term solutions that can solve the homelessness crisis from the root. Research has shown that interpersonal and community resources, in addition to subsidized housing and greater income, were associated with successful transition out of homelessness [@citeAubry]. 
+The observations made from this dataset reveal that the city council's effort have seen limited efficacy so far. Occupancy rates at emergency shelters remain alarmingly high all across Toronto with no sign of decreasing. This indicates that the city council still needs to continue efforts to find effective long-term solutions that can solve the homelessness crisis from the root. Research has shown that interpersonal and community resources, in addition to subsidized housing and greater income, were associated with successful transition out of homelessness [@citeAubry]. In addition to continuing to gather funds for affordable housing projects, this may represent another direction worthy of consideration for the city.
 
 In the meantime, consistent maintenance of these emergency services is also crucial to support the current wellbeing of the homeless population. Temporary shelters, though unable to solve the core of the problem, are vital to preventing substance abuse relapses, suicidality, and further reduction of a support network and community connections [@citeKerman]. In order to improve these emergency programs which are already stretching government budgets to the maximum, problem areas such as M2N and M5G must be investigated and tackled.
 
 ## Limitations and Next Steps {#sec-discussion-limitations}
-One major limitation of the current dataset is that it only covers data from January to September 2024 as of the writing of this paper. This means that any patterns present in the winter months of November and December are not observable to the current analysis. As well, due to the dataset being unaudited, its accuracy to the true situations at these shelter locations cannot be verified. 
+One major limitation of the current dataset is that it only covers data from January to September 2024 as of the writing of this paper. This means that any patterns present in the winter months of November and December are not observable to the current analysis. As well, due to the dataset being unaudited, its accuracy to the true situations at these shelter locations cannot be fully verified. 
 
 Further research should consider focussing in on the areas of higher occupancy and higher unavailabilities to understand the factors that may be causing these patterns, allowing for policy makers to better address the exact needs of the homeless population.
 
@@ -240,15 +238,13 @@ Sketches created when planning out the desired dataset and graphs for the curren
 #| tbl-cap: "First 5 Rows of Cleaned Data"
 #| echo: false
 
-sample_data <- data %>% top_n(-5, id) %>% 
-  select(month, date, fsa, location_id, actual_capacity, funding_capacity, 
-         occupied_beds, unoccupied_beds, unavailable_beds)
+sample_data <- data %>% top_n(-5, id)
 knitr::kable(sample_data, 
              align = "c",
-             col.names = c("Month", "Date", "FSA", "Location ID", 
+             col.names = c("id", "Month", "Date", "FSA", "Location ID", 
                            "Actual Capacity", "Funding Capacity", 
                            "Occupied Beds", "Unoccupied Beds", 
-                           "Unavailable Beds"))
+                           "Unavailable Beds", "Occupancy Rate"))
 ```
 
 

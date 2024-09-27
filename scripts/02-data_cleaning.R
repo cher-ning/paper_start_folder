@@ -32,7 +32,7 @@ filtered$fsa <- substr(filtered$LOCATION_POSTAL_CODE, start=1, stop=3)
 
 
 # removes unnecessarily variables
-filtered <- filtered %>% select(month, OCCUPANCY_DATE, fsa, LOCATION_ID, 
+filtered <- filtered %>% select('_id', month, OCCUPANCY_DATE, fsa, LOCATION_ID, 
                                 CAPACITY_ACTUAL_BED, CAPACITY_FUNDING_BED, 
                                 OCCUPIED_BEDS, UNOCCUPIED_BEDS, 
                                 UNAVAILABLE_BEDS, OCCUPANCY_RATE_BEDS)

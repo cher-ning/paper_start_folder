@@ -44,7 +44,7 @@ To achieve this, @sec-data will introduce the Toronto Shelter & Support Services
 
 # Data {#sec-data}
 
-## Overview {#data-overview}
+## Overview {#sec-data-overview}
 
 The dataset used for analysis is of shelter occupancy in the year 2024 [@shelterDataset], from Open Data Toronto [@opendatatoronto]. The data is updated daily by the Toronto Shelter & Support Services and has the Open Data License (@sec-license). However, one limitation it faces is that it is unaudited, therefore there are limited verification methods to ensure that the shelter programs' records are accurate to their actual situation. 
 
@@ -56,10 +56,10 @@ The R Programming language [@citeR] was used for all data cleaning, testing, and
 
 \newpage
 
-## Results {#data-findings}
+## Results {#sec-data-findings}
 This following section will use packages `ggplot2` [@citeggplot] and `knitr` [@citeKnitr] to generate several plots and tables to assist with visualizing patterns in the dataset.
 
-@tbl-occupancyrate-vs-month provides an initial summary of the shelters' mean occupancy rates over the months. As observed, there is consistent and high demand for emergency shelters regardless of the time of year.
+@tbl-occupancyrate-vs-month provides a summary of the shelters' mean occupancy rates over the months. As observed, there is consistently high demand for shelters regardless of the time of year.
 
 ```{r}
 #| label: tbl-occupancyrate-vs-month
@@ -76,7 +76,6 @@ knitr::kable(rate_means, align ="c", col.names= c("Month", "Occupancy Rate"))
 
 ```
 
-The occupancy rate can then be broken down into the mean funding capacity, actual capacity, and real number of occupied beds per month. The high occupancy rate observed in @tbl-occupancyrate-vs-month makes it unsurprising to see the number of occupied beds consistently match so closely to the shelters' actual capacity in @fig-occupancy-vs-month. Notably, @fig-occupancy-vs-month also shows a significant decrease in funding around March, which will be further discussed in @sec-discussion. It is also important to note that despite the near 100% occupancy rate, there is often a gap between the funding capacity and actual capacity, suggesting that sometimes the given facilities may not be utilized at their maximum potential. 
 ```{r}
 #| label: fig-occupancy-vs-month
 #| fig-cap: Shelter Capacity and Occupancy From Jan to Sep 2024
@@ -97,8 +96,11 @@ ggplot(occupancy_means, aes(x=month)) +
   theme_classic() +
   labs(x = "Month", y = "Number of Beds") + 
   scale_x_continuous(breaks = seq(1, 9, by = 1))
-
 ```
+
+\newpage
+The occupancy rate can then be broken down into the mean funding capacity, actual capacity, and real number of occupied beds per month. The high occupancy rate observed in @tbl-occupancyrate-vs-month makes it unsurprising to see the number of occupied beds consistently match so closely to the shelters' actual capacity in @fig-occupancy-vs-month. Notably, @fig-occupancy-vs-month also shows a significant decrease in funding around March, which will be further discussed in @sec-discussion. It is also important to note that despite the near 100% occupancy rate, there is often a gap between the funding capacity and actual capacity, suggesting that sometimes the given facilities may not be utilized at their maximum potential. This is a potential area of concern, and its implications will also be discussed in @sec-discussion. 
+
 Another dimension to consider is the geographical region of the shelters. Still focussing on the mean number of occupied beds, @fig-regionoccupancy shows a rather wide spread across different FSA regions, ranging from a minimum of 18.60 to a maximum of 87.74. Some of the regions reporting on the higher end include M5H, M6P, and M2H, which are neighbourhoods in Old Toronto, North York, and around High Park [@citeFSA].
 ```{r}
 #| label: fig-regionoccupancy
@@ -155,7 +157,7 @@ Using similar methods as above to group data by FSA code finds that the average 
 ```{r}
 #| label: tbl-unavailabilities-by-fsa
 #| eval: true
-#| tbl-cap: "Number of Unavailable Beds/Night At Different FSAs"
+#| tbl-cap: "Number of Unavailable Beds Per Night in Different FSAs"
 #| echo: false
 
 unavailable_beds <- data %>% select(fsa, unavailable_beds) %>% group_by(fsa) %>% 
@@ -178,11 +180,12 @@ summary(unavailable_beds)
 
 # Discussion {#sec-discussion}
 
-Additionally, the distribution of shelter locations across the city's different forward sortation areas (FSA), or the first three digits of a zip code, displays that there are particular areas with higher demand than others. For example, particular blocks in Old Toronto are evidently areas that require higher attention, as they are among the FSAs to receive most funding as well as the ones that have highest number of shelters (#cite dataset).
-
 ## Main Findings {#sec-discussion-findings}
-Analysis of this dataset in @data-findings yielded several conclusions about the still-prevalent homelessness crisis here in Toronto. First, the consistently high occupancy rate throughout the year suggests that the need for housing resources remains high, and is not particularly affected by time of year. However, as observed in @fig-occupancy-vs-month, there is a relatively steep dip in funding capacity around March that is not preceded by a dip in demand. This decrease is potentially due to the city emphasizing their efforts during winter months, as those are intuitively the most dangerous months to unable to access warmth and shelter [@cbcArticle]. 
+Analysis of this dataset in @sec-data-findings yielded several conclusions about the still-prevalent homelessness crisis here in Toronto. First, the consistently high occupancy rate throughout the year [@tbl-occupancyrate-vs-month] suggests that the need for housing resources remains high, and is not particularly affected by time of year. However, as observed in @fig-occupancy-vs-month, there is a relatively steep dip in funding capacity around March that is not preceded by a noticeable dip in demand. This decrease is potentially due to the city emphasizing their efforts during winter months, as those are intuitively the most dangerous months for those living on the streets [@cbcArticle]. As a result, when winter ends and weather begins warming up in March, the additional funding is no longer available, causing this large and sudden decrease.
 
+Moving onto FSA-based observations, it was found that there are several neighbourhoods including around Old Toronto and North York that have some of the highest concentration of emergency shelters and have highest funding capacities [@tbl-fsa-numshelters, @fig-numshelters-vs-fsa]. Despite the high occupancy [@fig-regionoccupancy] in these specific areas, it is important to remember that these findings are purely correlational and not causational. From this data alone, it is impossible to conclude whether these areas initially had greater rates of homelessness, thereby leading the government to spend more funds building shelters here, or that it is the higher concentration and availability of shelters here that will attract more homeless population to migrate here. 
+
+Next, analysis of the average bed unavailabilities across FSAs 
 
 ## Implications {#sec-discussion-implications}
 The observations made from this dataset reveal that the city council's effort have seen limited efficacy. Occupancy rates at emergency shelters remains alarmingly high all across Toronto with no sign of decreasing. Though these short-term solutions 
